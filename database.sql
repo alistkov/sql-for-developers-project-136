@@ -33,3 +33,20 @@ CREATE TABLE lessons (
     update_at DATE
     course_id BIGINT REFERENCES courses (id) ON DELETE SET NULL
 );
+
+CREATE TABLE teaching_groups (
+    id BIGINT PRIMARY KEY GENERATED ALWAYS AS IDENTITY,
+    slub VARCHAR(255),
+    created_at DATE,
+    updated_at DATE
+);
+
+CREATE TABLE users (
+    id BIGINT PRIMARY KEY GENERATED ALWAYS AS IDENTITY,
+    name VARCHAR(255),
+    email VARCHAR(255) UNIQUE NOT NULL,
+    password VARCHAR(255),
+    teaching_group_id BIGINT REFERENCES teaching_groups (id) ON DELETE SET NULL,
+    created_at DATE,
+    updated_at DATE
+);
