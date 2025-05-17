@@ -96,3 +96,21 @@ CREATE TABLE certificates (
     created_at DATE,
     updated_at DATE
 );
+
+CREATE TABLE quizzes (
+    id BIGINT PRIMARY KEY GENERATED ALWAYS AS IDENTITY,
+    lesson_id BIGINT REFERENCES lessons (id) ON DELETE SET NULL,
+    title VARCHAR(255),
+    content JSONB,
+    created_at DATE,
+    updated_at DATE
+);
+
+CREATE TABLE exercises (
+    id BIGINT PRIMARY KEY GENERATED ALWAYS AS IDENTITY,
+    lesson_id BIGINT REFERENCES lessons (id) ON DELETE SET NULL,
+    title VARCHAR(255),
+    url VARCHAR(255),
+    created_at DATE,
+    updated_at DATE
+);
