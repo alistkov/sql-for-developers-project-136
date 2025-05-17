@@ -50,3 +50,49 @@ CREATE TABLE users (
     created_at DATE,
     updated_at DATE
 );
+
+CREATE TYPE enrollment_status AS ENUM ('active', 'pending', 'cancelled', 'completed');
+
+CREATE TABLE enrollments (
+    id BIGINT PRIMARY KEY GENERATED ALWAYS AS IDENTITY,
+    user_id BIGINT,
+    program_id BIGINT,
+    status enrollment_status,
+    created_at DATE,
+    updated_at DATE
+);
+
+CREATE TYPE payment_status AS ENUM ('pending', 'paid', 'failed', 'refunded');
+
+CREATE TABLE payments (
+    id BIGINT PRIMARY KEY GENERATED ALWAYS AS IDENTITY,
+    enrolment_id BIGINT REFERENCES enrollments (id) ON DELETE SET NULL,
+    amount DOUBLE PRECISION,
+    status payment_status,
+    payment_date DATE,
+    created_at DATE,
+    updated_at DATE
+);
+
+CREATE TYPE program_completion_status AS ENUM ('active', 'completed', 'pending', 'cancelled');
+
+CREATE TABLE program_completions (
+    id BIGINT PRIMARY KEY GENERATED ALWAYS AS IDENTITY,
+    user_id BIGINT REFERENCES users (id) ON DELETE SET NULL,
+    program_id BIGINT REFERENCES programs (id) ON DELETE SET NULL,
+    status program_completion_status,
+    start DATE,
+    end DATE,
+    created_at DATE,
+    updated_at DATE
+);
+
+CREATE TABLE certificates (
+    id BIGINT PRIMARY KEY GENERATED ALWAYS AS IDENTITY,
+    user_id BIGINT REFERENCES users (id) ON DELETE SET NULL,
+    program_id BIGINT REFERENCES programs (id) ON DELETE SET NULL,
+    url VARCHAR(255),
+    issue_date DATE,
+    created_at DATE,
+    updated_at DATE
+);
