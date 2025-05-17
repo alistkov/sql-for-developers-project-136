@@ -114,3 +114,23 @@ CREATE TABLE exercises (
     created_at DATE,
     updated_at DATE
 );
+
+CREATE TABLE discussions (
+    id BIGINT PRIMARY KEY GENERATED ALWAYS AS IDENTITY,
+    lesson_id BIGINT REFERENCES lessons (id) ON DELETE SET NULL,
+    text TEXT,
+    created_at DATE,
+    updated_at DATE
+);
+
+CREATE TYPE blog_status AS ENUM ('created', 'in moderation', 'published', 'archived');
+
+CREATE TABLE blog (
+    id BIGINT PRIMARY KEY GENERATED ALWAYS AS IDENTITY,
+    student_id BIGINT REFERENCES users (id) ON DELETE SET NULL,
+    title VARCHAR(255),
+    text TEXT,
+    status blog_status,
+    created_at DATE,
+    updated_at DATE
+);
