@@ -1,3 +1,22 @@
+DROP TABLE IF EXISTS
+    programs,
+    modules,
+    courses,
+    lessons,
+    program_modules,
+    course_modules,
+    teaching_groups,
+    users,
+    enrollments,
+    payments,
+    program_completions,
+    certificates,
+    quizzes,
+    exercises,
+    discussions,
+    blogs
+    CASCADE;
+
 CREATE TABLE programs
 (
     id           BIGINT PRIMARY KEY GENERATED ALWAYS AS IDENTITY,
@@ -43,8 +62,8 @@ CREATE TABLE lessons
 
 CREATE TABLE program_modules
 (
-    program_id BIGINT REFERENCES programs (id) ON DELETE SET NULL,
-    module_id  BIGIN  REFERENCES modules (id) ON DELETE SET NULL,
+    program_id INT REFERENCES programs (id) ON DELETE CASCADE,
+    module_id  INT REFERENCES modules (id) ON DELETE CASCADE,
     PRIMARY KEY (program_id, module_id)
 );
 
@@ -158,7 +177,7 @@ CREATE TABLE discussions
 
 CREATE TYPE blog_status AS ENUM ('created', 'in moderation', 'published', 'archived');
 
-CREATE TABLE blog
+CREATE TABLE blogs
 (
     id         BIGINT PRIMARY KEY GENERATED ALWAYS AS IDENTITY,
     student_id BIGINT REFERENCES users (id) ON DELETE SET NULL,
