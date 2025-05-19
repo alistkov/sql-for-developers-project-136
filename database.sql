@@ -80,7 +80,8 @@ CREATE TYPE user_role AS ENUM ('student', 'admin', 'teacher');
 CREATE TABLE users (
     id                BIGINT PRIMARY KEY GENERATED ALWAYS AS IDENTITY,
     name              VARCHAR(255),
-    role              user_role email             VARCHAR(255) UNIQUE NOT NULL,
+    role              user_role,
+    email             VARCHAR(255) UNIQUE NOT NULL,
     password_hash     VARCHAR(255),
     teaching_group_id BIGINT REFERENCES teaching_groups (id) ON DELETE SET NULL,
     created_at        DATE,
@@ -88,36 +89,36 @@ CREATE TABLE users (
     deleted_at        DATE
 );
 
-CREATE TYPE enrollment_status AS ENUM ('active', 'pending', 'cancelled', 'completed');
+CREATE TYPE subscription AS ENUM ('active', 'pending', 'cancelled', 'completed');
 
 CREATE TABLE enrollments (
     id         BIGINT PRIMARY KEY GENERATED ALWAYS AS IDENTITY,
     user_id    BIGINT,
     program_id BIGINT,
-    status     enrollment_status,
+    status     subscription,
     created_at DATE,
     updated_at DATE
 );
 
-CREATE TYPE payment_status AS ENUM ('pending', 'paid', 'failed', 'refunded');
+CREATE TYPE payment AS ENUM ('pending', 'paid', 'failed', 'refunded');
 
 CREATE TABLE payments (
     id           BIGINT PRIMARY KEY GENERATED ALWAYS AS IDENTITY,
     enrolment_id BIGINT REFERENCES enrollments (id) ON DELETE SET NULL,
     amount       DOUBLE PRECISION,
-    status       payment_status,
+    status       payment,
     paid_at      DATE,
     created_at   DATE,
     updated_at   DATE
 );
 
-CREATE TYPE program_completion_status AS ENUM ('active', 'completed', 'pending', 'cancelled');
+CREATE TYPE completion AS ENUM ('active', 'completed', 'pending', 'cancelled');
 
 CREATE TABLE program_completions (
     id           BIGINT PRIMARY KEY GENERATED ALWAYS AS IDENTITY,
     user_id      BIGINT REFERENCES users (id) ON DELETE SET NULL,
     program_id   BIGINT REFERENCES programs (id) ON DELETE SET NULL,
-    status       program_completion_status,
+    status       completion,
     started_at   DATE,
     completed_at DATE,
     created_at   DATE,
@@ -160,14 +161,14 @@ CREATE TABLE discussions (
     updated_at DATE
 );
 
-CREATE TYPE blog_status AS ENUM ('created', 'in moderation', 'published', 'archived');
+CREATE TYPE status AS ENUM ('created', 'in moderation', 'published', 'archived');
 
 CREATE TABLE blogs (
     id         BIGINT PRIMARY KEY GENERATED ALWAYS AS IDENTITY,
     student_id BIGINT REFERENCES users (id) ON DELETE SET NULL,
     title      VARCHAR(255),
     name       TEXT,
-    status     blog_status,
+    status     status,
     created_at DATE,
     updated_at DATE
 );
