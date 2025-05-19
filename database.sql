@@ -167,7 +167,7 @@ CREATE TYPE status AS ENUM ('created', 'in moderation', 'published', 'archived')
 CREATE TABLE blogs (
     id         BIGINT PRIMARY KEY GENERATED ALWAYS AS IDENTITY,
     user_id    BIGINT REFERENCES users (id) ON DELETE SET NULL,
-    title      VARCHAR(255),
+    name       VARCHAR(255),
     content    TEXT,
     status     status,
     created_at DATE,
