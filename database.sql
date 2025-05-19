@@ -48,6 +48,13 @@ CREATE TABLE program_modules
     PRIMARY KEY (program_id, module_id)
 );
 
+CREATE TABLE course_modules
+(
+    course_id BIGINT REFERENCES courses (id) ON DELETE SET NULL,
+    module_id BIGINT REFERENCES modules (id) ON DELETE SET NULL,
+    PRIMARY KEY (course_id, module_id)
+)
+
 CREATE TABLE teaching_groups
 (
     id         BIGINT PRIMARY KEY GENERATED ALWAYS AS IDENTITY,
