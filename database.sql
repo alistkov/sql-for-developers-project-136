@@ -103,13 +103,13 @@ CREATE TABLE enrollments (
 CREATE TYPE payment AS ENUM ('pending', 'paid', 'failed', 'refunded');
 
 CREATE TABLE payments (
-    id           BIGINT PRIMARY KEY GENERATED ALWAYS AS IDENTITY,
-    enrolment_id BIGINT REFERENCES enrollments (id) ON DELETE SET NULL,
-    amount       DOUBLE PRECISION,
-    status       payment,
-    paid_at      DATE,
-    created_at   DATE,
-    updated_at   DATE
+    id            BIGINT PRIMARY KEY GENERATED ALWAYS AS IDENTITY,
+    enrollment_id BIGINT REFERENCES enrollments (id) ON DELETE SET NULL,
+    amount        DOUBLE PRECISION,
+    status        payment,
+    paid_at       DATE,
+    created_at    DATE,
+    updated_at    DATE
 );
 
 CREATE TYPE completion AS ENUM ('active', 'completed', 'pending', 'cancelled');
@@ -157,6 +157,7 @@ CREATE TABLE discussions (
     id         BIGINT PRIMARY KEY GENERATED ALWAYS AS IDENTITY,
     lesson_id  BIGINT REFERENCES lessons (id) ON DELETE SET NULL,
     text       TEXT,
+    user_id    BIGINT REFERENCES users (id) ON DELETE SET NULL,
     created_at DATE,
     updated_at DATE
 );
@@ -165,9 +166,9 @@ CREATE TYPE status AS ENUM ('created', 'in moderation', 'published', 'archived')
 
 CREATE TABLE blogs (
     id         BIGINT PRIMARY KEY GENERATED ALWAYS AS IDENTITY,
-    student_id BIGINT REFERENCES users (id) ON DELETE SET NULL,
+    user_id    BIGINT REFERENCES users (id) ON DELETE SET NULL,
     title      VARCHAR(255),
-    name       TEXT,
+    content    TEXT,
     status     status,
     created_at DATE,
     updated_at DATE
