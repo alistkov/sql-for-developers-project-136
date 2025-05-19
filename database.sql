@@ -17,8 +17,7 @@ DROP TABLE IF EXISTS
     blogs
     CASCADE;
 
-CREATE TABLE programs
-(
+CREATE TABLE programs (
     id           BIGINT PRIMARY KEY GENERATED ALWAYS AS IDENTITY,
     name         VARCHAR(255),
     price        INT,
@@ -27,8 +26,7 @@ CREATE TABLE programs
     updated_at   DATE
 );
 
-CREATE TABLE modules
-(
+CREATE TABLE modules (
     id          BIGINT PRIMARY KEY GENERATED ALWAYS AS IDENTITY,
     name        VARCHAR(255),
     description TEXT,
@@ -37,8 +35,7 @@ CREATE TABLE modules
     deleted_at  DATE
 );
 
-CREATE TABLE courses
-(
+CREATE TABLE courses (
     id          BIGINT PRIMARY KEY GENERATED ALWAYS AS IDENTITY,
     name        VARCHAR(255),
     description TEXT,
@@ -47,8 +44,7 @@ CREATE TABLE courses
     deleted_at  DATE
 );
 
-CREATE TABLE lessons
-(
+CREATE TABLE lessons (
     id         BIGINT PRIMARY KEY GENERATED ALWAYS AS IDENTITY,
     name       VARCHAR(255),
     content    TEXT,
@@ -60,22 +56,19 @@ CREATE TABLE lessons
     deleted_at DATE
 );
 
-CREATE TABLE program_modules
-(
+CREATE TABLE program_modules (
     program_id INT REFERENCES programs (id) ON DELETE CASCADE,
     module_id  INT REFERENCES modules (id) ON DELETE CASCADE,
     PRIMARY KEY (program_id, module_id)
 );
 
-CREATE TABLE course_modules
-(
+CREATE TABLE course_modules (
     course_id BIGINT REFERENCES courses (id) ON DELETE SET NULL,
     module_id BIGINT REFERENCES modules (id) ON DELETE SET NULL,
     PRIMARY KEY (course_id, module_id)
-)
+);
 
-CREATE TABLE teaching_groups
-(
+CREATE TABLE teaching_groups (
     id         BIGINT PRIMARY KEY GENERATED ALWAYS AS IDENTITY,
     slug       VARCHAR(255),
     created_at DATE,
@@ -84,8 +77,7 @@ CREATE TABLE teaching_groups
 
 CREATE TYPE user_role AS ENUM ('student', 'admin', 'teacher');
 
-CREATE TABLE users
-(
+CREATE TABLE users (
     id                BIGINT PRIMARY KEY GENERATED ALWAYS AS IDENTITY,
     name              VARCHAR(255),
     role              user_role email             VARCHAR(255) UNIQUE NOT NULL,
@@ -98,8 +90,7 @@ CREATE TABLE users
 
 CREATE TYPE enrollment_status AS ENUM ('active', 'pending', 'cancelled', 'completed');
 
-CREATE TABLE enrollments
-(
+CREATE TABLE enrollments (
     id         BIGINT PRIMARY KEY GENERATED ALWAYS AS IDENTITY,
     user_id    BIGINT,
     program_id BIGINT,
@@ -110,8 +101,7 @@ CREATE TABLE enrollments
 
 CREATE TYPE payment_status AS ENUM ('pending', 'paid', 'failed', 'refunded');
 
-CREATE TABLE payments
-(
+CREATE TABLE payments (
     id           BIGINT PRIMARY KEY GENERATED ALWAYS AS IDENTITY,
     enrolment_id BIGINT REFERENCES enrollments (id) ON DELETE SET NULL,
     amount       DOUBLE PRECISION,
@@ -123,8 +113,7 @@ CREATE TABLE payments
 
 CREATE TYPE program_completion_status AS ENUM ('active', 'completed', 'pending', 'cancelled');
 
-CREATE TABLE program_completions
-(
+CREATE TABLE program_completions (
     id           BIGINT PRIMARY KEY GENERATED ALWAYS AS IDENTITY,
     user_id      BIGINT REFERENCES users (id) ON DELETE SET NULL,
     program_id   BIGINT REFERENCES programs (id) ON DELETE SET NULL,
@@ -135,8 +124,7 @@ CREATE TABLE program_completions
     updated_at   DATE
 );
 
-CREATE TABLE certificates
-(
+CREATE TABLE certificates (
     id         BIGINT PRIMARY KEY GENERATED ALWAYS AS IDENTITY,
     user_id    BIGINT REFERENCES users (id) ON DELETE SET NULL,
     program_id BIGINT REFERENCES programs (id) ON DELETE SET NULL,
@@ -146,8 +134,7 @@ CREATE TABLE certificates
     updated_at DATE
 );
 
-CREATE TABLE quizzes
-(
+CREATE TABLE quizzes (
     id         BIGINT PRIMARY KEY GENERATED ALWAYS AS IDENTITY,
     lesson_id  BIGINT REFERENCES lessons (id) ON DELETE SET NULL,
     name       VARCHAR(255),
@@ -156,8 +143,7 @@ CREATE TABLE quizzes
     updated_at DATE
 );
 
-CREATE TABLE exercises
-(
+CREATE TABLE exercises (
     id         BIGINT PRIMARY KEY GENERATED ALWAYS AS IDENTITY,
     lesson_id  BIGINT REFERENCES lessons (id) ON DELETE SET NULL,
     name       VARCHAR(255),
@@ -166,8 +152,7 @@ CREATE TABLE exercises
     updated_at DATE
 );
 
-CREATE TABLE discussions
-(
+CREATE TABLE discussions (
     id         BIGINT PRIMARY KEY GENERATED ALWAYS AS IDENTITY,
     lesson_id  BIGINT REFERENCES lessons (id) ON DELETE SET NULL,
     text       TEXT,
@@ -177,8 +162,7 @@ CREATE TABLE discussions
 
 CREATE TYPE blog_status AS ENUM ('created', 'in moderation', 'published', 'archived');
 
-CREATE TABLE blogs
-(
+CREATE TABLE blogs (
     id         BIGINT PRIMARY KEY GENERATED ALWAYS AS IDENTITY,
     student_id BIGINT REFERENCES users (id) ON DELETE SET NULL,
     title      VARCHAR(255),
