@@ -41,6 +41,13 @@ CREATE TABLE lessons
     deleted_at DATE
 );
 
+CREATE TABLE program_modules
+(
+    program_id BIGINT REFERENCES programs (id) ON DELETE SET NULL,
+    module_id  BIGIN  REFERENCES modules (id) ON DELETE SET NULL,
+    PRIMARY KEY (program_id, module_id)
+);
+
 CREATE TABLE teaching_groups
 (
     id         BIGINT PRIMARY KEY GENERATED ALWAYS AS IDENTITY,
