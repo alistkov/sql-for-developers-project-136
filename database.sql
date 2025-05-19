@@ -75,7 +75,7 @@ CREATE TABLE teaching_groups (
     updated_at DATE
 );
 
-CREATE TYPE user_role AS ENUM ('student', 'admin', 'teacher');
+CREATE TYPE user_role AS ENUM ('Student', 'Admin', 'Teacher');
 
 CREATE TABLE users (
     id                BIGINT PRIMARY KEY GENERATED ALWAYS AS IDENTITY,
